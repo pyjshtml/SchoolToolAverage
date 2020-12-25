@@ -29,8 +29,8 @@
       <p>Your data is being handled</p>
       <p>There may have been a problem processing your data</p>
     </div>
-    <div class="content">
-      <table id="table" cellspacing=10 style="display: none;">
+    <div class="content" style="display: none;">
+      <table id="table" cellspacing=10>
         <tbody id="body"></tbody>
         <tfoot>
           <tr>
@@ -46,8 +46,10 @@
         open("https://schooltool.victorschools.org");
     </script>
     <script type="text/javascript">
-      window.data = JSON.parse(decodeURI(this.location.search.slice(2+4)));
+      window.data = JSON.parse(decodeURI());
       const $$ = id => document.getElementById(id);
+      window.names = this.location.search.split("&").find(elem=>elem.split("=")[0]==="name").split("=")[1].split("-");
+      $$("title").textContent = names.join(" ");
       const t4 = [
         {min: 93, value: 4},
         {min: 90, value: 3.7},
@@ -76,7 +78,7 @@
       }
       $$("average").textContent = (window.avg = window.data.map(elem=>parseFloat(elem.Average)).reduce((x,y)=>x+y)/window.data.length).toFixed(2);
       $$("gpa").textContent = (window.gpa = window.data.map(elem=>parseFloat(elem.GPA)).reduce((x,y)=>x+y)/window.data.length).toFixed(2);
-      $$("table").style.display = "block";
+      $$("content").style.display = "block";
       $$("warning").style.display = "none";
       document.body.classList.add("centerKids");
     </script>
