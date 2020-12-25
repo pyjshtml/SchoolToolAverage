@@ -83,7 +83,7 @@
     <script type="text/javascript">
       window.location.query = this.location.search.slice(1);
       if(this.location.search === "")
-      this.location.assign("?name=Jack-Dunfey&data=[{%22CourseName%22:%22AP%20Chemistry%22,%22Average%22:%2295.09%22},{%22CourseName%22:%22AP%20Language%20^^%20Composition%2010%22,%22Average%22:%2295.68%22},{%22CourseName%22:%22AP%20World%20History%2010%22,%22Average%22:%2295.08%22},{%22CourseName%22:%22CC%20Algebra%202%20%20Honors%22,%22Average%22:%2272.00%22},{%22CourseName%22:%22PE%2011/12%20Blue%22,%22Average%22:%2289.33%22},{%22CourseName%22:%22Principles%20of%20Engineering-PLTW%22,%22Average%22:%2298.08%22},{%22CourseName%22:%22Spanish%203%22,%22Average%22:%2295.70%22}]");
+        this.location.assign("?name=Jack-Dunfey&data=[{%22CourseName%22:%22AP%20Chemistry%22,%22Average%22:%2295.09%22},{%22CourseName%22:%22AP%20Language%20^^%20Composition%2010%22,%22Average%22:%2295.68%22},{%22CourseName%22:%22AP%20World%20History%2010%22,%22Average%22:%2295.08%22},{%22CourseName%22:%22CC%20Algebra%202%20%20Honors%22,%22Average%22:%2272.00%22},{%22CourseName%22:%22PE%2011/12%20Blue%22,%22Average%22:%2289.33%22},{%22CourseName%22:%22Principles%20of%20Engineering-PLTW%22,%22Average%22:%2298.08%22},{%22CourseName%22:%22Spanish%203%22,%22Average%22:%2295.70%22}]");
       window.data = JSON.parse(decodeURI(this.location.query.split("&").find(elem=>elem.split("=")[0]==="data").split("=")[1].replace("^^","&")));
       console.log("["+window.data.map(vl=>JSON.stringify(vl)).toString()+"]");
       const $$ = id => document.getElementById(id);
