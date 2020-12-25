@@ -9,8 +9,6 @@
         padding-left: 1vw;
         text-align: center;
       }
-      table{
-      }
       body, html{
         width: 100%;
         height: 100%;
@@ -22,6 +20,9 @@
         justify-content: center;
         align-items: center;
       }
+      strong{
+        font-size: 1.15rem;
+      }
     </style>
   </head>
   <body>
@@ -29,7 +30,9 @@
       <p>Your data is being handled</p>
       <p>There may have been a problem processing your data</p>
     </div>
-    <div class="content" style="display: none;">
+    <div id="content" style="display: none;">
+      <h1 id=title style="text-align: center"></h1>
+      <hr style="margin: auto 0px;">
       <table id="table" cellspacing=10>
         <tbody id="body"></tbody>
         <tfoot>
@@ -42,13 +45,10 @@
       </table>
     </div>
     <script type="text/javascript">
-      if(this.location.search === "?o")
-        open("https://schooltool.victorschools.org");
-    </script>
-    <script type="text/javascript">
-      window.data = JSON.parse(decodeURI());
+      window.location.query = this.location.search.slice(1);
+      window.data = JSON.parse(decodeURI(this.location.query.split("&").find(elem=>elem.split("=")[0]==="data").split("=")[1].replace("^^","&")));
       const $$ = id => document.getElementById(id);
-      window.names = this.location.search.split("&").find(elem=>elem.split("=")[0]==="name").split("=")[1].split("-");
+      window.names = this.location.query.split("&").find(elem=>elem.split("=")[0]==="name").split("=")[1].split("-");
       $$("title").textContent = names.join(" ");
       const t4 = [
         {min: 93, value: 4},
