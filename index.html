@@ -6,19 +6,54 @@
     <title>SchoolTool grade formatter</title>
     <style media="screen">
       td:not(:first-child){
-        padding-left: 1vw;
+        padding-left: 1%;
         text-align: center;
+      }
+      #content{
+        width: 34%;
+      }
+      table{
+        width: 100%;
+      }
+      #title{
+        margin: 0px;
+      }
+      @media screen and (min-width: 800px){
+        #content{
+          border: 1px solid black;
+          padding: 2%;
+        }
+        #title{
+          margin-bottom: 3%;
+        }
+      }
+      @media screen and (min-width: 661px){
+        .tableformat{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      @media screen and (max-width: 860px){
+        #content{
+          width: 100%;
+          border: none;
+        }
       }
       body, html{
         width: 100%;
         height: 100%;
         padding: 0px;
-        margin: 0px
+        margin: 0px;
       }
-      .centerKids{
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      @media screen and (max-width: 660px){
+        .tableformat{
+          padding-top: 10%;
+          height: 90%;
+        }
+        #title{
+          margin-bottom: 10%;
+        }
       }
       strong{
         font-size: 1.15rem;
@@ -31,7 +66,7 @@
       <p>There may have been a problem processing your data</p>
     </div>
     <div id="content" style="display: none;">
-      <h1 id=title style="text-align: center"></h1>
+      <h1 id=title style="text-align: center;"></h1>
       <hr style="margin: auto 0px;">
       <table id="table" cellspacing=10>
         <tbody id="body"></tbody>
@@ -98,7 +133,7 @@
       } process();
       $$("content").style.display = "block";
       $$("warning").style.display = "none";
-      document.body.classList.add("centerKids");
+      document.body.classList.add("tableformat");
     </script>
   </body>
 </html>
