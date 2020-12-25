@@ -40,44 +40,62 @@
             <td><strong>Total</strong></td>
             <td><strong id="average">__.__%</strong></td>
             <td><strong id="gpa">__.__%</strong></td>
+            <td><strobg id="letter">__</strong></td>
           </tr>
         </tfoot>
       </table>
     </div>
     <script type="text/javascript">
+      //process([{"CourseName":"AP Chemistry","Average":"95.09"},{"CourseName":"AP Language & Composition 10","Average":"95.68"},{"CourseName":"AP World History 10","Average":"95.08"},{"CourseName":"CC Algebra 2  Honors","Average":"100.00"},{"CourseName":"PE 11/12 Blue","Average":"89.33"},{"CourseName":"Principles of Engineering-PLTW","Average":"98.08"},{"CourseName":"Spanish 3","Average":"95.70"}])
       window.location.query = this.location.search.slice(1);
       window.data = JSON.parse(decodeURI(this.location.query.split("&").find(elem=>elem.split("=")[0]==="data").split("=")[1].replace("^^","&")));
+      console.log("["+window.data.map(vl=>JSON.stringify(vl)).toString()+"]");
       const $$ = id => document.getElementById(id);
       window.names = this.location.query.split("&").find(elem=>elem.split("=")[0]==="name").split("=")[1].split("-");
       $$("title").textContent = names.join(" ");
-      const t4 = [
-        {min: 93, value: 4},
-        {min: 90, value: 3.7},
-        {min: 87, value: 3.3},
-        {min: 83, value: 3.0},
-        {min: 80, value: 2.7},
-        {min: 77, value: 2.3},
-        {min: 73, value: 2.0},
-        {min: 70, value: 1.7},
-        {min: 67, value: 1.3},
-        {min: 65, value: 1.0},
-        {min: 0, value: 0}
-      ];
-      const gradeTo4 = grade => {
-        for(let i = 0; i < t4.length; i++)
-          if(grade >= t4[i].min) return t4[i].value;
-      }
-      for(let i = 0; i < window.data.length; i++){
-        let row = document.createElement("tr");
-        let label = document.createElement("td"), value = document.createElement("td"), gpa = document.createElement("td");
-        label.append(document.createTextNode(window.data[i].CourseName));
-        value.append(document.createTextNode(window.data[i].Average));
-        gpa.append(document.createTextNode(window.data[i].GPA = gradeTo4(parseFloat(window.data[i].Average))));
-        row.append(label, value, gpa);
-        $$("body").append(row);
-      }
-      $$("average").textContent = (window.avg = window.data.map(elem=>parseFloat(elem.Average)).reduce((x,y)=>x+y)/window.data.length).toFixed(2);
-      $$("gpa").textContent = (window.gpa = window.data.map(elem=>parseFloat(elem.GPA)).reduce((x,y)=>x+y)/window.data.length).toFixed(2);
+      function process(data=window.data){
+        $$("body").innerHTML = "";
+        const t4 = [
+          {min: 95, value: 4, letter: "A+"},
+          {min: 93, value: 4, letter: "A"},
+          {min: 90, value: 3.7, letter: "A-"},
+          {min: 87, value: 3.3, letter: "B+"},
+          {min: 83, value: 3.0, letter: "B"},
+          {min: 80, value: 2.7, letter: "B-"},
+          {min: 77, value: 2.3, letter: "C+"},
+          {min: 73, value: 2.0, letter: "C"},
+          {min: 70, value: 1.7, letter: "C-"},
+          {min: 67, value: 1.3, letter: "D+"},
+          {min: 65, value: 1.0, letter: "D"},
+          {min: 0, value: 0, letter: "F"}
+        ];
+        const gradeTo4 = grade => {
+          for(let i = 0; i < t4.length; i++)
+            if(grade >= t4[i].min) return t4[i].value;
+        };
+        const gradeToLetter = grade => {
+          for(let i = 0; i < t4.length; i++)
+            if(grade >= t4[i].min) return t4[i].letter;
+        }
+        const LetterFrom4 = four => {
+          for(let i = 0; i < t4.length; i++)
+            if(four >= t4[i].value) return t4[i].letter;
+        }
+        for(let i = 0; i < data.length; i++){
+          let row = document.createElement("tr");
+          let label = document.createElement("td"), value = document.createElement("td"), gpa = document.createElement("td");
+          let text = [data[i].CourseName, data[i].Average, data[i].GPA = gradeTo4(parseFloat(data[i].Average)), data[i].letter = gradeToLetter(parseFloat(data[i].Average))];
+          for(let j = 0; j < text.length; j++){
+            let td = document.createElement("td");
+            td.append(document.createTextNode(text[j]));
+            row.append(td);
+          }
+          $$("body").append(row);
+        }
+        $$("average").textContent = (window.avg = data.map(elem=>parseFloat(elem.Average)).reduce((x,y)=>x+y)/data.length).toFixed(2);
+        $$("gpa").textContent = (window.gpa = data.map(elem=>parseFloat(elem.GPA)).reduce((x,y)=>x+y)/data.length).toFixed(2);
+        $$("letter").textContent = (window.letter = LetterFrom4(window.gpa));
+      } process();
       $$("content").style.display = "block";
       $$("warning").style.display = "none";
       document.body.classList.add("centerKids");
