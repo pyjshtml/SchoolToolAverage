@@ -2,18 +2,83 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name=viewport content="width=device-width, initial-scale=1.0">
     <title>SchoolTool grade formatter</title>
+    <style media="screen">
+      td:not(:first-child){
+        padding-left: 1vw;
+        text-align: center;
+      }
+      table{
+      }
+      body, html{
+        width: 100%;
+        height: 100%;
+        padding: 0px;
+        margin: 0px
+      }
+      .centerKids{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
   </head>
   <body>
-    <p>Your data is being handled</p>
-    <p>There may have been a problem processing your data</p>
+    <div id="warning">
+      <p>Your data is being handled</p>
+      <p>There may have been a problem processing your data</p>
+    </div>
+    <div class="content">
+      <table id="table" cellspacing=10 style="display: none;">
+        <tbody id="body"></tbody>
+        <tfoot>
+          <tr>
+            <td><strong>Total</strong></td>
+            <td><strong id="average">__.__%</strong></td>
+            <td><strong id="gpa">__.__%</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
     <script type="text/javascript">
-      this.location.query = {};
-      this.location.search.slice(1).split("&").reduce((obj, item)=>{
-        let pair = item.split("=");
-        return {...obj, pair[0]: pair[1]};
-      }, this.location.query);
-      console.table(location.query);
+      if(this.location.search === "?o")
+        open("https://schooltool.victorschools.org/schooltoolweb");
+    </script>
+    <script type="text/javascript">
+      window.data = JSON.parse(decodeURI(this.location.search.slice(2+4)));
+      const $$ = id => document.getElementById(id);
+      const t4 = [
+        {min: 93, value: 4},
+        {min: 90, value: 3.7},
+        {min: 87, value: 3.3},
+        {min: 83, value: 3.0},
+        {min: 80, value: 2.7},
+        {min: 77, value: 2.3},
+        {min: 73, value: 2.0},
+        {min: 70, value: 1.7},
+        {min: 67, value: 1.3},
+        {min: 65, value: 1.0},
+        {min: 0, value: 0}
+      ];
+      const gradeTo4 = grade => {
+        for(let i = 0; i < t4.length; i++)
+          if(grade >= t4[i].min) return t4[i].value;
+      }
+      for(let i = 0; i < window.data.length; i++){
+        let row = document.createElement("tr");
+        let label = document.createElement("td"), value = document.createElement("td"), gpa = document.createElement("td");
+        label.append(document.createTextNode(window.data[i].CourseName));
+        value.append(document.createTextNode(window.data[i].Average));
+        gpa.append(document.createTextNode(window.data[i].GPA = gradeTo4(parseFloat(window.data[i].Average))));
+        row.append(label, value, gpa);
+        $$("body").append(row);
+      }
+      $$("average").textContent = (window.avg = window.data.map(elem=>parseFloat(elem.Average)).reduce((x,y)=>x+y)/window.data.length).toFixed(2);
+      $$("gpa").textContent = (window.gpa = window.data.map(elem=>parseFloat(elem.GPA)).reduce((x,y)=>x+y)/window.data.length).toFixed(2);
+      $$("table").style.display = "block";
+      $$("warning").style.display = "none";
+      document.body.classList.add("centerKids");
     </script>
   </body>
 </html>
