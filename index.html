@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>SchoolTool grade formatter</title>
+  </head>
+  <body>
+    <p>Your data is being handled</p>
+    <p>There may have been a problem processing your data</p>
+    <script type="text/javascript">
+      this.location.query = {};
+      this.location.search.slice(1).split("&").reduce((obj, item)=>{
+        let pair = item.split("=");
+        return {...obj, pair[0]: pair[1]};
+      }, this.location.query);
+      console.table(location.query);
+    </script>
+  </body>
+</html>
